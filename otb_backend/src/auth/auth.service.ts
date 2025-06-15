@@ -35,4 +35,15 @@ export class AuthService {
             }
         }
     }
+
+    async signIn(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+        const { username, password } = authCredentialsDto;
+        const user = await this.usersRepository.findOne({ where: { username } });
+
+        if (user && await bcrypt.compare(password, user.password)) {
+            return "Login successful";
+        } else {
+            throw new ConflictException("Invalid credentials");
+        }
+    }
 }
