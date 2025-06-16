@@ -1,2 +1,4 @@
 # otb_backend
 opentaskboard backend
+
+[![Node.js CI](https://github.com/elniebiet/otb_backend/otb_backend/actions/workflows/node.js.yml/badge.svg)](https://github.com/elniebiet/otb_backend/otb_backend/actions/workflows/node.js.yml)
