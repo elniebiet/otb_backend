@@ -9,10 +9,10 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'task-management',
+      port: 5003,
+      username: 'otb_admin',
+      password: 'tcB555CsVK6TG9b',
+      database: 'otb_main_db',
       autoLoadEntities: true, // Automatically load entities
       // entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // Note: set to false in production
