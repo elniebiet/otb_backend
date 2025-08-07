@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { AuthSignUpDTO, AuthSignInDTO } from './dto/auth-credentials.dto';
 import { Repository } from 'typeorm';
 import { OTB_User } from './user.entity';
 import * as bcrypt from 'bcrypt';
@@ -15,7 +15,7 @@ export class AuthService {
         private jwtService: JwtService, // Assuming JwtService is injected for token generation
     ){}
 
-    async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    async signUp(authCredentialsDto: AuthSignUpDTO): Promise<void> {
         const { username, password, email} = authCredentialsDto;
         const user = this.usersRepository.create({ username, password, email });
 
@@ -39,8 +39,8 @@ export class AuthService {
         }
     }
 
-    async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{accessToken: string}> {
-        const { email, username, password } = authCredentialsDto;
+    async signIn(authSignInDTO: AuthSignInDTO): Promise<{accessToken: string}> {
+        const { email, password } = authSignInDTO;
         const user = await this.usersRepository.findOne({ where: { email } });
 
         if (user && await bcrypt.compare(password, user.password)) {
