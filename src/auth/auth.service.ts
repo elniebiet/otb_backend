@@ -2,7 +2,7 @@ import { ConflictException, Injectable, InternalServerErrorException } from '@ne
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { OTB_User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
@@ -10,20 +10,20 @@ import { JwtPayload } from './jwt-payload.interface';
 @Injectable()
 export class AuthService {
     constructor(
-        @InjectRepository(User)
-        private usersRepository: Repository<User>,
+        @InjectRepository(OTB_User)
+        private usersRepository: Repository<OTB_User>,
         private jwtService: JwtService, // Assuming JwtService is injected for token generation
     ){}
 
     async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-        const { username, password } = authCredentialsDto;
-        const user = this.usersRepository.create({ username, password });
+        const { username, password, email} = authCredentialsDto;
+        const user = this.usersRepository.create({ username, password, email });
 
         // Hash the password before saving
         // salt will be uniquely generated for each user
         const salt = await bcrypt.genSalt();
         user.password = await bcrypt.hash(password, salt);
-        console.log("User to be saved:", user);
+        console.log("OTB_User to be saved:", user);
 
         try {
             await this.usersRepository.save(user);
@@ -40,11 +40,11 @@ export class AuthService {
     }
 
     async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{accessToken: string}> {
-        const { username, password } = authCredentialsDto;
-        const user = await this.usersRepository.findOne({ where: { username } });
+        const { email, username, password } = authCredentialsDto;
+        const user = await this.usersRepository.findOne({ where: { email } });
 
         if (user && await bcrypt.compare(password, user.password)) {
-            const payload: JwtPayload = { username };
+            const payload: JwtPayload = { email };
             const accessToken: string = await this.jwtService.sign(payload);
 
             return { accessToken }; // Return the access token

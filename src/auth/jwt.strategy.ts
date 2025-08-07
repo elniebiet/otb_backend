@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-jwt";
-import { User } from "./user.entity";
+import { OTB_User } from "./user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { JwtService } from "@nestjs/jwt";
@@ -11,8 +11,8 @@ import { JwtPayload } from "./jwt-payload.interface";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
-        @InjectRepository(User)
-        private usersRepository: Repository<User>,
+        @InjectRepository(OTB_User)
+        private usersRepository: Repository<OTB_User>,
     ){
         super({
             ignoreExpiration: false, // Set to true if you want to ignore expiration
@@ -21,13 +21,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(payload: JwtPayload): Promise<User> {
-        const { username } = payload;
-        const user = await this.usersRepository.findOne({ where: { username } });
+    async validate(payload: JwtPayload): Promise<OTB_User> {
+        const { email } = payload;
+        const user = await this.usersRepository.findOne({ where: { email } });
 
         if (!user) {
             // If user not found, throw an error
-            throw new UnauthorizedException("User not found");
+            throw new UnauthorizedException("OTB_User not found");
         }
 
         // Return the user object to be attached to the request
