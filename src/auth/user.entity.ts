@@ -5,7 +5,7 @@ export class OTB_User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({unique: true})
     email: string;
 
     @Column({unique: true})

@@ -31,7 +31,7 @@ export class AuthService {
             // Handle unique constraint violation
             console.log('Error saving user:', error.code);
             if(error.code === '23505') {
-                throw new ConflictException("Error saving user: Username already exists");
+                throw new ConflictException("Error saving user: Username or email already exists");
             }
             else {
                 throw new InternalServerErrorException();

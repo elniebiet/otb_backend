@@ -1,4 +1,5 @@
 import { IsString, MaxLength, MinLength, Matches } from "class-validator";
+import { Unique } from "typeorm";
 
 class AuthSignUpDTO {
     @IsString()
