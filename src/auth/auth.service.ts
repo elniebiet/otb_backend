@@ -15,7 +15,7 @@ export class AuthService {
         private jwtService: JwtService, // Assuming JwtService is injected for token generation
     ){}
 
-    async signUp(authCredentialsDto: AuthSignUpDTO): Promise<void> {
+    async signUp(authCredentialsDto: AuthSignUpDTO): Promise<{ message: string, statusCode: number }> {
         const { username, password, email} = authCredentialsDto;
         const user = this.usersRepository.create({ username, password, email });
 
@@ -27,6 +27,7 @@ export class AuthService {
 
         try {
             await this.usersRepository.save(user);
+            return { message: "success", statusCode: 201 };
         } catch (error) {
             // Handle unique constraint violation
             console.log('Error saving user:', error.code);
@@ -39,7 +40,7 @@ export class AuthService {
         }
     }
 
-    async signIn(authSignInDTO: AuthSignInDTO): Promise<{accessToken: string}> {
+    async signIn(authSignInDTO: AuthSignInDTO): Promise<{message: string, statusCode: number, accessToken: string}> {
         const { email, password } = authSignInDTO;
         const user = await this.usersRepository.findOne({ where: { email } });
 
@@ -47,8 +48,7 @@ export class AuthService {
             const payload: JwtPayload = { email };
             const accessToken: string = await this.jwtService.sign(payload);
 
-            return { accessToken }; // Return the access token
-            // return "Login successful";
+            return { message: "success", statusCode: 201, accessToken }; // Return the access token
         } else {
             throw new ConflictException("Invalid credentials");
         }

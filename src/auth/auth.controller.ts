@@ -10,14 +10,14 @@ export class AuthController {
     @Post('/signup')
     signUp(
         @Body() authCredentialDto: AuthSignUpDTO
-    ): Promise<void> {
+    ): Promise<{message: string, statusCode: number}> {
         return this.authService.signUp(authCredentialDto);
     }
 
     @Post('/signin')
     signIn(
         @Body() authSignInDTO: AuthSignInDTO
-    ): Promise<{accessToken: string}> {
+    ): Promise<{message: string, statusCode: number, accessToken: string}> {
         return this.authService.signIn(authSignInDTO);
     }
 }
