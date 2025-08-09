@@ -41,7 +41,20 @@ export class AuthService {
     }
 
     async signIn(authSignInDTO: AuthSignInDTO): Promise<{message: string, statusCode: number, accessToken: string}> {
-        const { email, password } = authSignInDTO;
+        const { email, password, accessToken } = authSignInDTO;
+
+        // check for access token validity
+        if(accessToken.length > 0)
+        {
+            try {
+                const payload = await this.jwtService.verifyAsync(accessToken);
+                return { message: "success", statusCode: 201, accessToken };
+            } catch (error) {
+                // Invalid access token
+            }
+        }
+        
+        // invalid access token or no token, check login credentials
         const user = await this.usersRepository.findOne({ where: { email } });
 
         if (user && await bcrypt.compare(password, user.password)) {
