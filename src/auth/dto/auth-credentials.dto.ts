@@ -36,7 +36,19 @@ class AuthSignInDTO {
     password: string;
 
     @IsString()
+    @MinLength(0)
+    @MaxLength(500)
+    accessToken: string;
+}
+
+class AccessTokenDTO {
+    @IsString()
     @MinLength(4)
+    @MaxLength(100)
+    email: string;
+
+    @IsString()
+    @MinLength(0)
     @MaxLength(500)
     accessToken: string;
 }
@@ -44,4 +56,5 @@ class AuthSignInDTO {
 export { 
     AuthSignUpDTO,
     AuthSignInDTO,
+    AccessTokenDTO,
  };

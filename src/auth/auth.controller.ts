@@ -1,5 +1,5 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
-import { AuthSignUpDTO, AuthSignInDTO } from './dto/auth-credentials.dto';
+import { AuthSignUpDTO, AuthSignInDTO, AccessTokenDTO } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -19,5 +19,12 @@ export class AuthController {
         @Body() authSignInDTO: AuthSignInDTO
     ): Promise<{message: string, statusCode: number, accessToken: string}> {
         return this.authService.signIn(authSignInDTO);
+    }
+
+    @Post('/atverify')
+    verifyAccessToken(
+        @Body() accessTokenDTO: AccessTokenDTO
+    ): Promise<{valid: number}> {
+        return this.authService.VerifyAccessToken(accessTokenDTO);
     }
 }

@@ -1,2 +1,20 @@
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuaWViaWV0LmFrcGFuQGdtYWlsLmNvbSIsImlhdCI6MTc1NDcyNzg1NSwiZXhwIjoxNzU0NzMxNDU1fQ.BEumpF31VJJ9oMi2Zrhhay2D6GbuiqlEdMNMDdjDyb4
 Galilei_123
+
+React.useEffect(() => {
+    const access_token = localStorage.getItem("otb_access_token");
+    if (_auth_is_valid_access_token(access_token, global_email)) {
+      _set_logged_in(true);
+    }
+  }, [global_email]);
+
+  // check if user has valid access token 
+  // React.useEffect(() => {
+  //   const access_token = localStorage.getItem("otb_access_token");
+  //   console.log("email: ");
+  //   console.log(global_email);
+  //   if(_auth_is_valid_access_token(access_token, global_email)) {
+  //     console.log("Valid access token found.");
+  //     _set_logged_in(true);
+  //   }
+  // }, []);

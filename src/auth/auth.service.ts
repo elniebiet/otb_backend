@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthSignUpDTO, AuthSignInDTO } from './dto/auth-credentials.dto';
+import { AuthSignUpDTO, AuthSignInDTO, AccessTokenDTO } from './dto/auth-credentials.dto';
 import { Repository } from 'typeorm';
 import { OTB_User } from './user.entity';
 import * as bcrypt from 'bcrypt';
@@ -42,17 +42,6 @@ export class AuthService {
 
     async signIn(authSignInDTO: AuthSignInDTO): Promise<{message: string, statusCode: number, accessToken: string}> {
         const { email, password, accessToken } = authSignInDTO;
-
-        // check for access token validity
-        if(accessToken.length > 0)
-        {
-            try {
-                const payload = await this.jwtService.verifyAsync(accessToken);
-                return { message: "success", statusCode: 201, accessToken };
-            } catch (error) {
-                // Invalid access token
-            }
-        }
         
         // invalid access token or no token, check login credentials
         const user = await this.usersRepository.findOne({ where: { email } });
@@ -65,5 +54,23 @@ export class AuthService {
         } else {
             throw new ConflictException("Invalid credentials");
         }
+    }
+
+    async VerifyAccessToken(accessTokenDTO: AccessTokenDTO): Promise<{valid: number}> {
+        const { email, accessToken } = accessTokenDTO;
+
+        if(accessToken.length > 0)
+        {
+            try {
+                const payload = await this.jwtService.verifyAsync(accessToken);
+                if (payload.email === email) {
+                    return { valid: 1 };
+                }                 
+            } catch (error) {
+                // invalid access token
+            }
+        }
+
+        return { valid: 0 };
     }
 }
