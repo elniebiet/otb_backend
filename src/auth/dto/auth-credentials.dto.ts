@@ -19,6 +19,17 @@ class AuthSignUpDTO {
     @MinLength(4)
     @MaxLength(100)
     email: string;
+
+    @IsString()
+    @MinLength(1)
+    @MaxLength(30)
+    firstname: string;
+
+    @IsString()
+    @MinLength(1)
+    @MaxLength(30)
+    lastname: string;
+
 }
 
 class AuthSignInDTO {

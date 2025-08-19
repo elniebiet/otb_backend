@@ -13,7 +13,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'defaultSecretKey',
       signOptions: {
-        expiresIn: '1h', // Token expiration time
+        expiresIn: '1h', // Token expiration time original should be 1 hour.
       },
     }),
     TypeOrmModule.forFeature([OTB_User]),

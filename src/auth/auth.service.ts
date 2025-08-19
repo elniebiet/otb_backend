@@ -16,8 +16,8 @@ export class AuthService {
     ){}
 
     async signUp(authCredentialsDto: AuthSignUpDTO): Promise<{ message: string, statusCode: number }> {
-        const { username, password, email} = authCredentialsDto;
-        const user = this.usersRepository.create({ username, password, email });
+        const { username, password, email, firstname, lastname } = authCredentialsDto;
+        const user = this.usersRepository.create({ username, password, email, firstname, lastname });
 
         // Hash the password before saving
         // salt will be uniquely generated for each user
