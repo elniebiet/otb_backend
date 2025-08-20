@@ -16,9 +16,33 @@ export class AuthService {
     ){}
 
     async signUp(authCredentialsDto: AuthSignUpDTO): Promise<{ message: string, statusCode: number }> {
-        const { username, password, email, firstname, lastname } = authCredentialsDto;
-        const user = this.usersRepository.create({ username, password, email, firstname, lastname });
+        const { 
+            username, 
+            password, 
+            email, 
+            firstname, 
+            lastname,
+            role = "",
+            jobtitle = "",
+            company = "",
+            country = "",
+        } = authCredentialsDto;
+        
+        const user = this.usersRepository.create({ 
+            username, 
+            password, 
+            email, 
+            firstname, 
+            lastname,
+            role,
+            jobtitle,
+            company,
+            country,
+            joined: new Date(),
+        });
 
+        console.log("OTB_User to be saved:");
+        console.log(user);
         // Hash the password before saving
         // salt will be uniquely generated for each user
         const salt = await bcrypt.genSalt();
@@ -86,7 +110,11 @@ export class AuthService {
                     if (user) {
                         const personalDetails: PersonalDetailsDTO = {
                             firstname: user.firstname,
-                            lastname: user.lastname
+                            lastname: user.lastname,
+                            role: user.role || "",
+                            jobtitle: user.jobtitle || "",
+                            company: user.company || "",
+                            country: user.country || "",
                         };
                         return { statusCode: 200, personalDetails };
                     }
@@ -98,7 +126,11 @@ export class AuthService {
 
         const personalDetails: PersonalDetailsDTO = {
             firstname: "",
-            lastname: ""
+            lastname: "",
+            role: "",
+            jobtitle: "",
+            company: "",
+            country: "",
         };
 
         throw new NotFoundException(personalDetails);

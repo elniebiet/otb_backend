@@ -19,4 +19,19 @@ export class OTB_User {
 
     @Column()
     password: string;
+
+    @Column()
+    role: string;
+
+    @Column()
+    jobtitle: string;
+
+    @Column()
+    company: string;
+
+    @Column()
+    country: string;
+
+    @Column()
+    joined: Date;
 }

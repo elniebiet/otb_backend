@@ -1,4 +1,4 @@
-import { IsString, MaxLength, MinLength, Matches } from "class-validator";
+import { IsString, MaxLength, MinLength, Matches, IsDate } from "class-validator";
 import { Unique } from "typeorm";
 
 class AuthSignUpDTO {
@@ -30,6 +30,25 @@ class AuthSignUpDTO {
     @MaxLength(30)
     lastname: string;
 
+    @IsString()
+    @MinLength(0)
+    @MaxLength(100)
+    role: string;
+
+    @IsString()
+    @MinLength(0)
+    @MaxLength(100)
+    jobtitle: string;
+
+    @IsString()
+    @MinLength(0)
+    @MaxLength(100)
+    company: string;
+
+    @IsString()
+    @MinLength(0)
+    @MaxLength(100)
+    country: string;
 }
 
 class AuthSignInDTO {
@@ -74,6 +93,26 @@ class PersonalDetailsDTO {
     @MinLength(1)
     @MaxLength(30)
     lastname: string;
+
+    @IsString()
+    @MinLength(0)
+    @MaxLength(100)
+    role: string;
+
+    @IsString()
+    @MinLength(0)
+    @MaxLength(100)
+    jobtitle: string;
+
+    @IsString()
+    @MinLength(0)
+    @MaxLength(100)
+    company: string;
+
+    @IsString()
+    @MinLength(0)
+    @MaxLength(100)
+    country: string;
 }
 
 export { 
