@@ -1,6 +1,6 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthSignUpDTO, AuthSignInDTO, AccessTokenDTO } from './dto/auth-credentials.dto';
+import { AuthSignUpDTO, AuthSignInDTO, AccessTokenDTO, PersonalDetailsDTO } from './dto/auth-credentials.dto';
 import { Repository } from 'typeorm';
 import { OTB_User } from './user.entity';
 import * as bcrypt from 'bcrypt';
@@ -72,5 +72,35 @@ export class AuthService {
         }
 
         return { valid: 0 };
+    }
+
+    async getPersonalDetails(accessTokenDTO: AccessTokenDTO): Promise<{statusCode: number, personalDetails: PersonalDetailsDTO}> {
+        const { email, accessToken } = accessTokenDTO;
+
+        if(accessToken.length > 0)
+        {
+            try {
+                const payload = await this.jwtService.verifyAsync(accessToken);
+                if (payload.email === email) {
+                    const user = await this.usersRepository.findOne({ where: { email } });
+                    if (user) {
+                        const personalDetails: PersonalDetailsDTO = {
+                            firstname: user.firstname,
+                            lastname: user.lastname
+                        };
+                        return { statusCode: 200, personalDetails };
+                    }
+                }                 
+            } catch (error) {
+                // invalid access token
+            }
+        }
+
+        const personalDetails: PersonalDetailsDTO = {
+            firstname: "",
+            lastname: ""
+        };
+
+        throw new NotFoundException(personalDetails);
     }
 }

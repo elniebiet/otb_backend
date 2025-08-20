@@ -64,8 +64,21 @@ class AccessTokenDTO {
     accessToken: string;
 }
 
+class PersonalDetailsDTO {
+    @IsString()
+    @MinLength(1)
+    @MaxLength(30)
+    firstname: string;
+
+    @IsString()
+    @MinLength(1)
+    @MaxLength(30)
+    lastname: string;
+}
+
 export { 
     AuthSignUpDTO,
     AuthSignInDTO,
     AccessTokenDTO,
+    PersonalDetailsDTO,
  };
