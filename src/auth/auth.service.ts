@@ -115,6 +115,7 @@ export class AuthService {
                             jobtitle: user.jobtitle || "",
                             company: user.company || "",
                             country: user.country || "",
+                            joined: user.joined.toISOString().split('T')[0], // Format date as 'YYYY-MM-DD'
                         };
                         return { statusCode: 200, personalDetails };
                     }
@@ -131,6 +132,7 @@ export class AuthService {
             jobtitle: "",
             company: "",
             country: "",
+            joined: "",
         };
 
         throw new NotFoundException(personalDetails);

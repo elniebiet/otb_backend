@@ -113,6 +113,9 @@ class PersonalDetailsDTO {
     @MinLength(0)
     @MaxLength(100)
     country: string;
+
+    @IsString()
+    joined: string;
 }
 
 export { 
