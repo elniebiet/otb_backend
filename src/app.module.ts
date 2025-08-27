@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { GeneralModule } from './otb_general/otb_general.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
       logging: false, // logging for debugging
     }),
     AuthModule,
+    GeneralModule,
   ],
 })
 export class AppModule {}
